@@ -57,9 +57,14 @@ function reduce(array, f, acc) {
 //containing the length of each word in that string.
 //solve it using the most appropriate helper functions(reduce,each,map,filter).
 //wordLengths("hello its me") // [5,3,2]
+ 
 
+// we need to work on an array using map ,so we will just split the input using space 
 function wordLengths(str) {
-    // TODO: your code here 
+  var array=str.split(" ");
+  return map(array, function(element){
+    return element.length;
+  }) 
 }
 
 //=============================================================================
@@ -71,8 +76,17 @@ function wordLengths(str) {
 // countOccurrences("hello", "l"); // 2
 // countOccurrences("hello, world!", "l"); // 3
 
+
+//we will use each, for this question, first of all we will work on an array containing all the character of the input string than we will increase our result everytime i'ts matching with the test character.
 function countOccurrences(string, character) {
-    // your code is here
+   var result=0; 
+   var array=string.split("");
+    each(array, function(element){
+      if(element===character){
+        result=result+1;
+      }
+    })
+    return result;
 }
 
 //=============================================================================
@@ -83,8 +97,12 @@ function countOccurrences(string, character) {
 //solve it using the most appropriate helper functions(reduce,each,map,filter).
 // wordsLongerThanThree("Hello Mad World") //["Hello", "World"]
 
+// in this case ,filter is most appropriate, because we have a condition ,and we will put our input string inside an array ,than we will woek on it.
 function wordsLongerThanThree(str) {
-    // TODO: your code here 
+    var array=str.split(" ");
+    return filter(array, function(element){
+      return element.length>3;
+    }) 
 }
 
 //=============================================================================
@@ -98,8 +116,12 @@ function wordsLongerThanThree(str) {
 //repeatString('dog', 2); // => 'dog' + 'dog' => 'dogdog' 
 //repeatString('dog', 3); // => 'dog' + 'dog' + 'dog' => 'dogdogdog'
 
+// our stop condition will be when our input count is equal to 0; else we will return our main function but with count--;
 function repeatString(str, count) { 
- // TODO: your code here 
+  if(count===0){
+    return ""
+  }
+  return str+repeatString(str, count-1);
 } 
  
 
@@ -128,7 +150,40 @@ function repeatString(str, count) {
 // pizza.eatSlice();
 // pizza.eatSlice();
 
-// Write your code here .....
+function makePizza(crust, size, numberOfSlice){
+  var c=crust,s=size,n=numberOfSlice;
+  var ingredients=[];//this is our ingredients proprety wich is an array that will contain all the ingredients added when the first function is invoked
+  return{
+    addIngredients : function(ingredient){
+        ingredients.push(ingredient);
+        return ingredients;
+    },
+    displayIngredients : function(){
+      var str="";
+      for(var i = 0; i < ingredients.length; i++){
+        str=str+","+ingredients[i];
+      }
+      return "the ingredients are:"+str.slice(1);
+    },
+    // we used seTime out function to display the string in 2 seconds
+    bakePizza : function () {
+      var string = "your "+c+" "+s+" "+n+" slice pizza is done";
+       return setTimeout(function(){
+         console.log(string)
+       },2000)
+    },
+    eatSlice : function(){
+      if(n !== 0){
+        n=n-1;
+        return "you have "+n+" slices left";
+      }
+      else{
+        return "you finished your pizza hope you like it ";
+      }
+    }
+
+  }
+}
 
 //=============================================================================
 /*                                  Q6                                      */
@@ -152,10 +207,32 @@ c- Change the "currentRead" to be the first book from "toRead" array
 d- Decrement the number of "unread" books
 */
 
-// Now, to make sure that you are actually reading, make a comment below this and type: Yes I am
+// Now, to make sure that you are actually reading, make a comment below this and type: Yes I am :) of course i am !!
 
-// Write your code here .....
+function ReadingList(){
+  var book ={};
+  book.read = 0;
+  book.unRead = 0;
+  book.toRead = [];
+  book.currentRead = " ";
+  book.readBooks = [];
+  book.AddBook=AddBook;
+  book.finishCurrentBook=finishCurrentBook;
+  return book;
+}
 
+var AddBook = function(name){
+  this.toRead.push(name);
+  this.unRead+=1;
+}
+
+var finishCurrentBook = function(name){
+   this.currentRead=name;
+   this.readBooks.push(this.currentRead);
+   this.read+=1;
+   this.toRead.unshift(this.currentRead);
+   this.unRead-=1;
+}
 //=============================================================================
 /*                                  Q7                                       */
 //=============================================================================
@@ -174,8 +251,30 @@ d- Decrement the number of "unread" books
 //  safe('silver-bar','big') => "Can't fit"
 //  safe('money','small') => "watch gold-bar money"
 
-// Write your code here .....
-
+function makeSafe(sizeLimit){
+  var max=sizeLimit;
+  return  function compare(item, itemSize){
+  var array=[];
+    if(itemSize==="big"){
+      max=max-3;
+      array.push(item);
+    }else if(itemSize ==="medium"){
+      max=max-2;
+      array.push(item);
+    }else if(itemSize ==="small"){
+      max=max-1
+      array.push(item);
+    }else if(max===0){
+      var str="";
+      for(var i = 0; i < array.length; i++){
+      str= str+" "+array[i]
+      }
+      return str;
+    }else if(max < 0){
+      return "can not fit";
+    }
+  }
+}
 //=============================================================================
 /*                                  Q8                                       */
 //=============================================================================
@@ -219,9 +318,11 @@ d- Decrement the number of "unread" books
 
 // 2- In OOP, what does "this" refer to ?
 
-// 3- What is jQuery?
+// 3- What is jQuery?  
+// jQuery is a library of javascript ; it's not a language.
 
-// 4- what is the diffrence between Closure's methods and The OOP's methods?
+// 4- what is the diffrence between Closure's methods and The OOP's methods? 
+//  in closure the methods are declared inside the "parent function", but in oop they are declared like variables in the global scoop using this to connect with the parent function
 
 
 
